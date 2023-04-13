@@ -217,9 +217,12 @@ class PlgSystemDarkmode extends CMSPlugin
      */
     private function animationHandler(): void
     {
+
+        // Build the animation Configuration Object
         $this->animation                        = new stdClass();
-        $this->animation->animation_name        = substr(uniqid('EDM_'), 0, 7);
+        $this->animation->animation_name        = 'EDM_' . rand(100, 999);
         $this->animation->animation_duration    = $this->params->get('animation-duration');
+        unset($randnum);
 
         $duration = $this->animation->animation_duration . 'ms';
 
