@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.0" type="plugin" group="system" method="upgrade">
+    <name>System - ElisDarkmode</name>
+    <author>Elias Ritter</author>
+    <creationDate>march 2023</creationDate>
+    <copyright>(C) 2023 Elias Ritter</copyright>
+    <license>GNU/GPL</license>
+    <authorEmail>eliasritter168667@gmail.com</authorEmail>
+    <version>1.0</version>
+    <description>A Simple Application for creating a Darkmode Layout in Joomla!</description>
+    <files>
+        <filename plugin="darkmode">darkmode.php</filename>
+        <filename>index.html</filename>
+        <folder>app</folder>
+    </files>
+    <config>
+        <fields name="params" addfieldpath="plugins/system/darkmode">
+            <fieldset name="basic">
+                <field name="variables" type="subform" layoutoff="joomla.form.field.subform.repeatable-table" multiple="true" groupByFieldset="true" label="Darkmode-Styles">
+                    <form>
+                        <fieldset label="Style-Property" name="variables">
+                            <field type="text" label="Style-Variable" name="name" />
+                            <field showon="alt_value:false" name="lm_value" type="color" default="#fff" format="rgba" label="Lightmode-Color"/>
+                            <field showon="alt_value:false" name="dm_value" type="color" default="#000" format="rgba" label="Darkmode-Color"/>
+                            <field showon="alt_value:true" name="lm_alt_value" type="text" default="" label="Alternative Lightmode value" />
+                            <field showon="alt_value:true" name="dm_alt_value" type="text" default="" label="Alternative Darkmode value" />
+                            <field name="alt_value" type="radio" default="false" label="Use alternative values" description="" class="btn-group btn-group-yesno">
+                                <option value="true">JYES</option>
+                                <option value="false">JNO</option>
+                            </field>
+                        </fieldset>
+                    </form>
+                </field>
+                <field type="spacer" name="Settings" hr="true" />
+                <field name="default" type="radio" default="light" label="Default Style to use" description="" class="btn-group btn-group-yesno">
+                    <option value="dark">Darkmode</option>
+                    <option value="light">Lightmode</option>
+                </field>
+                    <field name="showButtons" type="radio" default="true" label="Show Mode Switch" description="" class="btn-group btn-group-yesno">
+                        <option value="true">JYES</option>
+                        <option value="false">JNO</option>
+                    </field>
+                    <field showon="showButtons:true" type="text" default="Change Mode" label="Button Name" name="buttonName" />
+                    <field showon="showButtons:true" type="text" label="Append to" name="appendButton" />
+                    <field showon="showButtons:true" type="text" default="btn btn-primary" label="Button Classes" name="buttonclass" />
+                    <field name="loginconsole" type="radio" default="true" label="Show Log in Console" description="" class="btn-group btn-group-yesno">
+                        <option value="true">JYES</option>
+                        <option value="false">JNO</option>
+                    </field>
+                    <field name="animate" type="radio" default="true" label="Show fade Animation" description="" class="btn-group btn-group-yesno">
+                        <option value="true">JYES</option>
+                        <option value="false">JNO</option>
+                    </field>
+                    <field showon="animate:true" name="animation-duration" type="number" default="300" label="Animation duration" description="" min="100" max="500" step="50" />
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+        <server type="extension" priority="1" name="Elias-Service-Update">https://eliasritter.de/download/update_darkmode.xml
+        </server>
+    </updateservers>
+</extension>
