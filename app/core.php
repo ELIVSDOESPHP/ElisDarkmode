@@ -338,11 +338,6 @@ class PlgSystemDarkmode extends CMSPlugin
                 $this->fieldIterator->next();
             }
 
-            // If the Iterator ran more than 2000 Times, throw an Exception
-            if($counter >= 2000) {
-                throw new Exception('Maximum of 2000 Property Fields reached');
-            }
-
             /*
              * Dynamically add the '--' Prefix for CSS-Variables.
              *
