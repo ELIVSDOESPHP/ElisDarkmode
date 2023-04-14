@@ -6,7 +6,7 @@
     <copyright>(C) 2023 Elias Ritter</copyright>
     <license>GNU/GPL</license>
     <authorEmail>eliasritter168667@gmail.com</authorEmail>
-    <version>1.0</version>
+    <version>1.1</version>
     <description>A Simple Application for creating a Darkmode Layout in Joomla!</description>
     <files>
         <filename plugin="darkmode">darkmode.php</filename>
