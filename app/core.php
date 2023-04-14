@@ -145,6 +145,9 @@ class PlgSystemDarkmode extends CMSPlugin
 
             if ($this->issite) {
 
+                // Setting the sameSite Attribute, so that Firefox shuts up
+                $sameSite = 'lax';
+
                 // Clean and restart the Output Buffer
                 static::resetOutputBuffer();
 
@@ -156,7 +159,7 @@ class PlgSystemDarkmode extends CMSPlugin
                 exdate.setDate(exdate.getDate() + exdays);
                 var c_value=escape(value) + ((exdays==null)
                 ? "" : "; expires="+exdate.toUTCString())
-                + "; path=/";
+                + "; path=/; SameSite=<?= $sameSite ?>";
                 document.cookie=c_name + "=" + c_value;
                 }
                 <?php
