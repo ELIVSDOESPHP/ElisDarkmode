@@ -159,7 +159,10 @@ class PlgSystemDarkmode extends CMSPlugin
                 exdate.setDate(exdate.getDate() + exdays);
                 var c_value=escape(value) + ((exdays==null)
                 ? "" : "; expires="+exdate.toUTCString())
-                + "; path=/; SameSite=<?= $sameSite ?>";
+                + "; path=/;
+                <?php if(!empty($sameSite)) : ?>
+                SameSite=<?= $sameSite ?>";
+                <?php endif; ?>
                 document.cookie=c_name + "=" + c_value;
                 }
                 <?php
