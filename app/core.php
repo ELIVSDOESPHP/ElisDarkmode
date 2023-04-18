@@ -335,6 +335,7 @@ class PlgSystemDarkmode extends CMSPlugin
          *
          * @param object $var   The Value of the current Iterated Array entry
          * @return void
+         * @since               version 1.2
          */
         $applyOnIterate = function(object $var) use (&$mode, &$scripts) {
 
