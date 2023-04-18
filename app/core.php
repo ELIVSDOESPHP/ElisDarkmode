@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
  * @author      Elias Ritter
  * @license     GNU General Public License (GPL) 2.0 or later
  *
- * @version     1.1 | 03.2023
+ * @version     1.2 | 04.2023
  * @package     ElisDarkmode Plugin
  * @since       version 1.0
  * @copyright   2023 Elias Ritter
@@ -74,12 +74,6 @@ class PlgSystemDarkmode extends CMSPlugin
      */
     private $animation;
 
-    /**
-     * @var Iterator        The main Property Iterator
-     * @since               version 1.0
-     */
-    private $fieldIterator;
-
     /* === Joomla! Objects === */
 
     /**
@@ -131,11 +125,21 @@ class PlgSystemDarkmode extends CMSPlugin
         {
             if ($this->issite) {
                 // Check if a repeateable field exists and is valid
-                if (empty($this->variables) || $this->fieldIterator->count() == 1 && empty($this->variables->variables0->name)) return;
+                if (
+                        empty($this->variables)
+                        ||
+                        count((array)$this->variables) == 1
+                        &&
+                        empty($this->variables->variables0->name)) return;
 
                 // If Button Rendering is activated, render it
-                if ($this->params->get('showButtons') == 'true' && !empty($this->params->get('buttonclass')))
+                if (
+                        $this->params->get('showButtons') == 'true'
+                        &&
+                        !empty($this->params->get('buttonclass')))
+                {
                     $this->createButton();
+                }
             }
 
             // Get an Instance of the Joomla!-WebAssetManager
@@ -197,7 +201,7 @@ class PlgSystemDarkmode extends CMSPlugin
      * @return void
      * @since version 1.0
      */
-    private function importCleanResource(string $data, string $type, bool $minify = true): void
+    private function importCleanResource(string &$data, string $type, bool $minify = true): void
     {
         if($minify) {
             $data = preg_replace('/\s+/', ' ', $data);
@@ -228,7 +232,6 @@ class PlgSystemDarkmode extends CMSPlugin
         $this->animation                        = new stdClass();
         $this->animation->animation_name        = 'EDM_' . rand(100, 999);
         $this->animation->animation_duration    = $this->params->get('animation-duration');
-        unset($randnum);
 
         $duration = $this->animation->animation_duration . 'ms';
 
@@ -320,45 +323,26 @@ class PlgSystemDarkmode extends CMSPlugin
      * Create Code Snippets used for Switching between Styles
      *
      * @param string $mode  The Mode to get the Contents of
-     * @return array        The Code Snippets in an Array or null on failure
+     * @return array        The Code Snippets as an Array
      * @since               1.0
-     * @throws Exception    Throws an Exception if the Iterator ran too many times
      */
     private function createScripts(string $mode): array
     {
-        $scripts            = array();
+        $scripts = array();
 
-        // Creating the Main Property Iterator Instance
-        $obj = new ArrayObject($this->variables);
-        $this->fieldIterator = $obj->getIterator();
+        /**
+         * Lambda Function for Handling Iterations
+         *
+         * @param object $var   The Value of the current Iterated Array entry
+         * @return void         Returns if the given Value is empty
+         */
+        $applyOnIterate = function(object $var) use (&$mode, &$scripts) {
 
-        $counter = 0;
-
-        // Iterate through the Property-Fields
-        while ($this->fieldIterator->valid())
-        {
-            $var = $this->fieldIterator->current();
-
-            // If a repeateable Field has no name, skip it
-            if (empty($var->name)) {
-                $this->fieldIterator->next();
-            }
-
-            /*
-             * Dynamically add the '--' Prefix for CSS-Variables.
-             *
-             * If the Prefix was already set manually in the Backend,
-             * it will be removed and redeclared
-             */
+            if (empty($var->name)) return;
             $name = '--' . trim(str_replace('--', '', $var->name));
 
-            /*
-             * If default Values are set, use default values.
-             * If custom Values are set, use them instead.
-             */
             switch ($mode)
             {
-
                 default:
                 case 'light':
                     $value = ($var->alt_value == 'false') ? $var->lm_value : $var->lm_alt_value;
@@ -369,20 +353,14 @@ class PlgSystemDarkmode extends CMSPlugin
                     break;
             }
 
-            // Clean and restart the Output Buffer
             static::resetOutputBuffer();
-
-            // Create a Code Snippet and save it in the Output Buffer
             ?>
             document.documentElement.style.setProperty('<?= $name ?>', '<?= $value ?>');
             <?php
-
             $scripts[] = trim(ob_get_clean());
+        };
 
-            // Advance the Iterator Pointer
-            $this->fieldIterator->next();
-            ++$counter;
-        }
+        array_walk($this->variables, $applyOnIterate);
         return $scripts;
     }
 
@@ -561,7 +539,10 @@ class PlgSystemDarkmode extends CMSPlugin
      */
     private static function resetOutputBuffer(): void
     {
-        ob_clean();
-        ob_start();
+        if(!ob_get_level()) {
+            ob_start();
+        } else {
+            ob_clean();
+        }
     }
 }
