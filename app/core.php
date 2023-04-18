@@ -241,7 +241,9 @@ class PlgSystemDarkmode extends CMSPlugin
         // Set the Animation Time
         ?>
         document.documentElement.style.setProperty('animation-duration', '<?=$duration ?>');
+        <?php if($this->params->get('setscrollbehavior') == 'true') : ?>
         document.documentElement.style.setProperty('scroll-behavior', 'smooth');
+        <?php endif ?>
         <?php
         $this->outputScripts[] = trim(ob_get_clean());
 
