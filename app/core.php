@@ -260,8 +260,8 @@ class PlgSystemDarkmode extends CMSPlugin
      * Throws an Error Message for Error Handling without crashing Joomla!
      *
      * @param   Error $e The Error-Object
-     * @throws  Exception
-     * @since   version
+     * @throws  Throwable
+     * @since   version 1.0
      */
     private function displayError(Throwable $e)
     {
@@ -284,8 +284,8 @@ class PlgSystemDarkmode extends CMSPlugin
      *
      * @link    https://docs.joomla.org/Plugin/Events/System
      * @return  void
-     * @since   1.0
-     * @throws  Exception
+     * @since   version 1.0
+     * @throws  Throwable
      */
     public function onAfterInitialise(): void
     {
@@ -324,7 +324,7 @@ class PlgSystemDarkmode extends CMSPlugin
      *
      * @param string $mode  The Mode to get the Contents of
      * @return array        The Code Snippets as an Array
-     * @since               1.0
+     * @since               version 1.0
      */
     private function createScripts(string $mode): array
     {
@@ -334,7 +334,7 @@ class PlgSystemDarkmode extends CMSPlugin
          * Lambda Function for Handling Iterations
          *
          * @param object $var   The Value of the current Iterated Array entry
-         * @return void         Returns if the given Value is empty
+         * @return void
          */
         $applyOnIterate = function(object $var) use (&$mode, &$scripts) {
 
@@ -369,7 +369,7 @@ class PlgSystemDarkmode extends CMSPlugin
      * then included in the HTML-Head
      *
      * @return void
-     * @since 1.0
+     * @since version 1.0
      */
     private function createOutputScript(): void
     {
@@ -483,7 +483,7 @@ class PlgSystemDarkmode extends CMSPlugin
      * Create the Switcher-Button
      *
      * @return void
-     * @since 1.0
+     * @since version 1.0
      */
     private function createButton(): void
     {
@@ -524,7 +524,7 @@ class PlgSystemDarkmode extends CMSPlugin
      *
      * @param string $style     The User-selected Style
      * @return string           The Code-Snippet
-     * @since                   1.0
+     * @since                   version 1.0
      */
     private static function setJSCookie(string $style): string
     {
@@ -535,13 +535,13 @@ class PlgSystemDarkmode extends CMSPlugin
      * Cleans and restarts the Output Buffer
      *
      * @return void
-     * @since 1.0
+     * @since version 1.0
      */
     private static function resetOutputBuffer(): void
     {
-        if(!ob_get_level()) {
+        if (!ob_get_level()) {
             ob_start();
-        } else {
+        } elseif (!empty(ob_get_contents())) {
             ob_clean();
         }
     }
