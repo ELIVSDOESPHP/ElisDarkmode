@@ -52,6 +52,10 @@
                         <option value="false">JNO</option>
                     </field>
                     <field showon="animate:true" name="animation-duration" type="number" default="300" label="Animation duration" description="" min="100" max="500" step="50" />
+                <field showon="animate:true" name="setscrollbehavior" type="radio" default="true" label="Set Scroll Behavior to 'smooth' (Recommended)" description="" class="btn-group btn-group-yesno">
+                    <option value="true">JYES</option>
+                    <option value="false">JNO</option>
+                </field>
             </fieldset>
         </fields>
     </config>
